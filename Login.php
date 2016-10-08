@@ -41,7 +41,9 @@ if( $result == TRUE ){
                 "message" => "login successful.",
                 "user" => array(
                     "nickname" => $user->nickname,
+                    "telephone" => $user->telephone,
                     "success_rate" => $user->success_rate,
+                    "credit" => $user->credit,
                     "id" => $user->id
                 )
             )

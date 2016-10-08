@@ -19,19 +19,22 @@ if(isset( $_POST ) && ( isset($_POST['username']) && isset($_POST['password']) )
 $username = $_POST['username'];
 //$password = md5($_POST['password']);
 $password = $_POST['password'];
-if(isset($_POST))
+if(isset($_POST['nickname']))
     $nickname = $_POST['nickname'];
+if(isset($_POST['telephone']))
+    $telephone = $_POST['telephone'];
+else $telephone = 00000000000;
 include 'Config.php';
 
 $register_sql = "
-    insert into `user`(`username`,`password`,`nickname`,`success_rate`)values('".$username."','".$password."','".$nickname."',null);
+    insert into `user`(`username`,`password`,`nickname`,`telephone`,`success_rate`,`credit`)values('$username','$password','$nickname',$telephone,null,null);
 ";
 $conn->query("USE `".$db_name."`");
 if($conn->query($register_sql) == TRUE ){
     echo json_encode(array("success" => "1","error" => "0","message" => "register successful."));
     $conn->close();
 }else{
-    echo json_encode(array("success" => "0","error" => "2","message" => "database oprating failed.". $conn->error));
+    echo json_encode(array("success" => "0","error" => "2","message" => "database operating failed.". $conn->error));
     $conn->close();
     exit();
 }
