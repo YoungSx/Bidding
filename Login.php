@@ -5,20 +5,44 @@
  * Date: 2016/10/7
  * Time: 23:25
  */
-
-//判断用户名密码在不在
-if(isset( $_POST ) && ( isset($_POST['username']) && isset($_POST['password']) )){
-    if( $_POST['username'] == "" || $_POST['password'] == "" ){
+if( isset($_GET) ){
+    //判断用户名密码在不在
+    if(isset( $_GET ) && ( isset($_GET['username']) && isset($_GET['password']) )){
+        if( $_GET['username'] == "" || $_GET['password'] == "" ){
+            echo json_encode(array("success" => "0","error" => "3","message" => "username or password is wrong."));
+            exit();
+        }
+    }else{
         echo json_encode(array("success" => "0","error" => "3","message" => "username or password is wrong."));
         exit();
     }
+    $username = $_GET['username'];
+    $password = $_GET['password'];
+    //$password = md5($_GET['password']);
+}elseif($_POST){
+    //判断用户名密码在不在
+    if(isset( $_POST ) && ( isset($_POST['username']) && isset($_POST['password']) )){
+        if( $_POST['username'] == "" || $_POST['password'] == "" ){
+            echo json_encode(array("success" => "0","error" => "3","message" => "username or password is wrong."));
+            exit();
+        }
+    }else{
+        echo json_encode(array("success" => "0","error" => "3","message" => "username or password is wrong."));
+        exit();
+    }
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    //$password = md5($_POST['password']);
 }else{
     echo json_encode(array("success" => "0","error" => "3","message" => "username or password is wrong."));
     exit();
 }
-$username = $_POST['username'];
-$password = $_POST['password'];
-//$password = md5($_POST['password']);
+
+
+
+
+
+
 
 include 'Config.php';
 include 'User.php';
@@ -48,6 +72,10 @@ if( $result == TRUE ){
                 )
             )
         );
+
+        //启用session
+        session_start();
+        $_SESSION['username'] = $user->getUsername();
     } else{
         echo json_encode(array("success" => "0","error" => "4","message" => "password is wrong."));
     }
