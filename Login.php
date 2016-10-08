@@ -21,12 +21,11 @@ $password = $_POST['password'];
 //$password = md5($_POST['password']);
 
 include 'Config.php';
+include 'User.php';
 
 //初始化用户信息
-$login_sql = "select `password` from `User` where `username`= ' $username '" ;
+$login_sql = "select `password` from `User` where `username`= '$username';" ;//
 $result = $conn->query($login_sql);
-
-
 
 if( $result == TRUE ){
     $row = $result->fetch_assoc();

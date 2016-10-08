@@ -25,7 +25,7 @@ class User
     }
     public function updateUserInfo($conn){
         $username = $this->username;
-        $user_info_sql = "SELECT `nickname`,`success_rate`,`id` FROM `User` where `username` = ' $username ' ;";
+        $user_info_sql = "SELECT `nickname`,`success_rate`,`id` FROM `User` where `username` = '$username' ;";
         $result = $conn->query($user_info_sql);
 
         $row = $result->fetch_assoc();

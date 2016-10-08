@@ -18,3 +18,4 @@ if($conn->connect_error){
     echo json_encode(array("success" => "0","error" => "1","message" => "database connecting error."));
     exit();
 }
+$conn->select_db("Bidding");
