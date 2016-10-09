@@ -7,7 +7,7 @@
  */
 
 $db_create_sql = "create database `Bidding`;";
-$user_db_create_sql = "create table `user`(
+$user_table_create_sql = "create table `user`(
 	id int(5) not null auto_increment primary key,
 	username varchar(20) not null,
 	password varchar(20) not null,
@@ -16,7 +16,7 @@ $user_db_create_sql = "create table `user`(
 	success_rate float null default 0,
 	credit float null default 0
 );";
-$task_db_create_sql = "create table `task`(
+$task_table_create_sql = "create table `task`(
 	id int(5) not null auto_increment primary key,
 	title varchar(200) not null,
 	text varchar(2000) null default '',
@@ -24,4 +24,9 @@ $task_db_create_sql = "create table `task`(
 	publisher int(5) not null,
 	need_count int(5) not null default 1,
 	already_count int(5) null default 0
+);";
+$jion_table_create_sql = "create table `jion`(
+	id int(5) not null auto_increment primary key,
+	user_id int(5) not null,
+	task_id int(5) not null
 );";

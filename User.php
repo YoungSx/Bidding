@@ -63,4 +63,33 @@ class User
         if( $result == TRUE ) return true;
         else return false;
     }
+
+    public function joinTask($conn ,$task_id){
+
+        //尚未判断是否已经加入
+
+
+        $task_sql = "select `need_count`,`already_count` from `task` where id='$task_id';";
+        $result = $conn->query($task_sql);
+        $row = $result->fetch_assoc();
+
+        $need_count = $row['need_count'];
+        if($row['already_count'] == "") $already_count=0;
+        else $already_count = $row['already_count'];
+
+        if($need_count == $already_count) return false;
+
+        $already_count++;
+        $already_plus_sql = "update `task` set `already_count`=$already_count where `id`=$task_id";
+        $plus_result = $conn->query($already_plus_sql);
+
+        $user_id = $this->id;
+
+        $join_sql = "insert into `join`(`user_id`,`task_id`)values($user_id ,$task_id);";
+
+        $join_result = $conn->query($join_sql);
+
+        if($plus_result && $join_result) return TRUE;
+        else return FALSE;
+    }
 }
