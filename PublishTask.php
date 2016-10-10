@@ -17,14 +17,14 @@ include 'User.php';
 $user = new User($_SESSION['username']);
 $user->updateUserInfo($conn);
 
-if( !isset( $_GET ) || !isset($_GET['title']) ){
+if( !isset( $_POST ) || !isset($_POST['title']) ){
     echo json_encode(array("success" => "0","error" => "6","message" => "task information is wrong."));
     exit();
 }
-$title = $_GET['title'];
-$text = $_GET['text'];
-$price = $_GET['price'];
-$need_count = $_GET['need_count'];
+$title = $_POST['title'];
+$text = $_POST['text'];
+$price = $_POST['price'];
+$need_count = $_POST['need_count'];
 
 if ( $user->publishTask($conn ,$title ,$text ,$price ,$need_count) )
     echo json_encode(array("success" => "1","error" => "0","message" => "task publish successful."));

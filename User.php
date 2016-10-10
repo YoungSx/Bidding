@@ -70,8 +70,8 @@ class User
         //判断是否已经加入了这个任务
         $task_repeat_confirm_sql = "select `user_id`,`task_id` from `join` where user_id=$user_id and task_id=$task_id;";
         $task_repeat_confirm_result = $conn->query($task_repeat_confirm_sql);
-        if( $task_repeat_confirm_result ) return false;
-
+        $task_repeat_row = $task_repeat_confirm_result->fetch_assoc();
+        if( !empty($task_repeat_row) ) return false;
 
         $task_sql = "select `need_count`,`already_count` from `task` where id=$task_id;";
         $result = $conn->query($task_sql);

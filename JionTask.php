@@ -16,11 +16,11 @@ include 'User.php';
 $user = new User($_SESSION['username']);
 $user->updateUserInfo($conn);
 
-if( !isset( $_GET ) || !isset($_GET['task_id']) ){
+if( !isset( $_POST ) || !isset($_POST['task_id']) ){
     echo json_encode(array("success" => "0","error" => "7","message" => "task id is wrong."));
     exit();
 }
-$task_id = $_GET['task_id'];
+$task_id = $_POST['task_id'];
 
 if( $user->joinTask($conn ,$task_id) ){
     echo json_encode(array("success" => "1","error" => "0","message" => "join task successful."));

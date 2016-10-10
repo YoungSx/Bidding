@@ -22,7 +22,7 @@ if( !isset( $_GET ) || !isset($_GET['task_id']) ){
 }
 $task_id = $_GET['task_id'];
 
-$task_info_sql = "SELECT `title`,`text`,`price`,`publisher`,`need_count`,`already_count` FROM `task` where `id` = '$task_id';";
+$task_info_sql = "SELECT `id`,`title`,`text`,`price`,`publisher`,`need_count`,`already_count` FROM `task` where `id` = '$task_id';";
 $task_info_result = $conn->query($task_info_sql);
 
 if( $task_info_result == FALSE )
@@ -31,11 +31,11 @@ if( $task_info_result == FALSE )
 $task_info_row = $task_info_result->fetch_assoc();
 
 /////////////////////////////////////////////////////获取任务参与者信息
-$task_join_sql = "SELECT `user_id` FROM `join` where `task_id` = '$task_id';";
+$task_join_sql = "SELECT `user_id`,`accept` FROM `join` where `task_id` = '$task_id';";
 $task_join_result = $conn->query($task_join_sql);
 if( $task_join_result == FALSE )
     echo json_encode(array("success" => "0","error" => "101","message" => "ERROR."));
-
+$task_join=array();
 while ($task_join_row = $task_join_result->fetch_assoc()){
     $task_join[] = $task_join_row ;
 }
@@ -51,4 +51,5 @@ $task_info = array(
     'already_count' => $task_info_row['already_count'],
     'task_join' => $task_join
 );
+echo json_encode($task_info);
 
