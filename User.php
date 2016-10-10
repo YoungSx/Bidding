@@ -34,7 +34,7 @@ class User
     }
     public function updateUserInfo($conn){
         $username = $this->username;
-        $user_info_sql = "SELECT `nickname`,`telephone`,`success_rate`,`credit`,`id` FROM `ser` where `username` = '$username';";
+        $user_info_sql = "SELECT `nickname`,`telephone`,`success_rate`,`credit`,`id` FROM `user` where `username` = '$username';";
         $result = $conn->query($user_info_sql);
 
         $row = $result->fetch_assoc();
@@ -65,11 +65,15 @@ class User
     }
 
     public function joinTask($conn ,$task_id){
+        $user_id = $this->id;
 
-        //尚未判断是否已经加入
+        //判断是否已经加入了这个任务
+        $task_repeat_confirm_sql = "select `user_id`,`task_id` from `join` where user_id=$user_id and task_id=$task_id;";
+        $task_repeat_confirm_result = $conn->query($task_repeat_confirm_sql);
+        if( $task_repeat_confirm_result ) return false;
 
 
-        $task_sql = "select `need_count`,`already_count` from `task` where id='$task_id';";
+        $task_sql = "select `need_count`,`already_count` from `task` where id=$task_id;";
         $result = $conn->query($task_sql);
         $row = $result->fetch_assoc();
 
@@ -77,19 +81,31 @@ class User
         if($row['already_count'] == "") $already_count=0;
         else $already_count = $row['already_count'];
 
+        //判断是否已满
         if($need_count == $already_count) return false;
 
-        $already_count++;
-        $already_plus_sql = "update `task` set `already_count`=$already_count where `id`=$task_id";
-        $plus_result = $conn->query($already_plus_sql);
-
-        $user_id = $this->id;
-
         $join_sql = "insert into `join`(`user_id`,`task_id`)values($user_id ,$task_id);";
-
         $join_result = $conn->query($join_sql);
 
-        if($plus_result && $join_result) return TRUE;
+        if( $join_result ) return TRUE;
+        else return FALSE;
+    }
+
+    public function checkTask($conn ,$user_id ,$task_id){
+
+        //判断是否已经确认
+        $confirm_sql = "select `accept` from `join` where user_id=$user_id and task_id=$task_id;";
+        $confirm_result = $conn->query( $confirm_sql );
+        $confirm_row =  $confirm_result->fetch_assoc();
+        if( $confirm_row['accept'] != 0 ) return false;
+
+        $check_sql = "update `join` set `accept`=1 where user_id=$user_id and task_id=$task_id;";
+        $check_result = $conn->query($check_sql);
+
+        $already_plus_sql = "update `task` set `already_count`=`already_count`+1 where `id`=$task_id";
+        $plus_result = $conn->query($already_plus_sql);
+
+        if( $plus_result && $check_result ) return TRUE;
         else return FALSE;
     }
 }

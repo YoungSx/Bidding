@@ -27,7 +27,7 @@ else $telephone = 00000000000;
 include 'Config.php';
 
 $register_sql = "
-    insert into `user`(`username`,`password`,`nickname`,`telephone`,`success_rate`,`credit`)values('$username','$password','$nickname',$telephone,null,null);
+    insert into `user`(`username`,`password`,`nickname`,`telephone`)values('$username','$password','$nickname',$telephone);
 ";
 $conn->query("USE `".$db_name."`");
 if($conn->query($register_sql) == TRUE ){

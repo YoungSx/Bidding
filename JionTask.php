@@ -25,6 +25,6 @@ $task_id = $_GET['task_id'];
 if( $user->joinTask($conn ,$task_id) ){
     echo json_encode(array("success" => "1","error" => "0","message" => "join task successful."));
 }else{
-    echo json_encode(array("success" => "0","error" => "101","message" => "join task faled."));
+    echo json_encode(array("success" => "0","error" => "101","message" => "join task failed."));
 }
 
