@@ -19,3 +19,4 @@ if($conn->connect_error){
     exit();
 }
 $conn->select_db("Bidding");
+$conn->query('SET NAMES utf8');
