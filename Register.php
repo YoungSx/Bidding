@@ -23,11 +23,11 @@ if(isset($_POST['nickname']))
     $nickname = $_POST['nickname'];
 if(isset($_POST['telephone']))
     $telephone = $_POST['telephone'];
-else $telephone = 00000000000;
+else $telephone = '00000000000';
 include 'Config.php';
 
 $register_sql = "
-    insert into `user`(`username`,`password`,`nickname`,`telephone`)values('$username','$password','$nickname',$telephone);
+    insert into `user`(`username`,`password`,`nickname`,`telephone`)values('$username','$password','$nickname','$telephone');
 ";
 $conn->query("USE `".$db_name."`");
 if($conn->query($register_sql) == TRUE ){

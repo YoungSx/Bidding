@@ -9,10 +9,10 @@
 $db_create_sql = "create database `Bidding`;";
 $user_table_create_sql = "create table `user`(
 	id int(5) not null auto_increment primary key,
-	username varchar(20) not null,
+	username varchar(20) not null unique,
 	password varchar(20) not null,
 	nickname varchar(20) not null default '',
-	telephone int(12) not null,
+	telephone varchar(11) not null,
 	success_rate float null default 0,
 	credit float null default 0
 );";
@@ -25,8 +25,9 @@ $task_table_create_sql = "create table `task`(
 	need_count int(5) not null default 1,
 	already_count int(5) null default 0
 );";
-$jion_table_create_sql = "create table `jion`(
+$jion_table_create_sql = "create table `join`(
 	id int(5) not null auto_increment primary key,
 	user_id int(5) not null,
-	task_id int(5) not null
+	task_id int(5) not null,
+	accept int(5) null default 0
 );";
