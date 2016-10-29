@@ -5,21 +5,7 @@
  * Date: 2016/10/7
  * Time: 23:25
  */
-if( isset($_GET) ){
-    //判断用户名密码在不在
-    if(isset( $_GET ) && ( isset($_GET['username']) && isset($_GET['password']) )){
-        if( $_GET['username'] == "" || $_GET['password'] == "" ){
-            echo json_encode(array("success" => "0","error" => "3","message" => "username or password is wrong."));
-            exit();
-        }
-    }else{
-        echo json_encode(array("success" => "0","error" => "3","message" => "username or password is wrong."));
-        exit();
-    }
-    $username = $_GET['username'];
-    $password = $_GET['password'];
-    //$password = md5($_GET['password']);
-}elseif($_POST){
+if($_POST){
     //判断用户名密码在不在
     if(isset( $_POST ) && ( isset($_POST['username']) && isset($_POST['password']) )){
         if( $_POST['username'] == "" || $_POST['password'] == "" ){
@@ -58,6 +44,12 @@ if( $result == TRUE ){
         //实例化User，并获取用户其他信息，然后返回
         $user = new User($username);
         $user->updateUserInfo($conn);
+
+        //启用session
+        session_start();
+        $_SESSION['username'] = $user->getUsername();
+        $sessionId = session_id();
+
         echo json_encode(
             array(
                 "success" => "1",
@@ -68,14 +60,12 @@ if( $result == TRUE ){
                     "telephone" => $user->telephone,
                     "success_rate" => $user->success_rate,
                     "credit" => $user->credit,
-                    "id" => $user->id
+                    "id" => $user->id,
+                    "session_id" => $sessionId
                 )
             )
         );
 
-        //启用session
-        session_start();
-        $_SESSION['username'] = $user->getUsername();
     } else{
         echo json_encode(array("success" => "0","error" => "4","message" => "password is wrong."));
     }
