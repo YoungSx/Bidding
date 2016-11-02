@@ -5,8 +5,14 @@
  * Date: 2016/10/11
  * Time: 11:35
  */
-
+if( !isset( $_POST ) || !isset($_POST['session_id']) ){
+    echo json_encode(array("success" => "0","error" => "11","message" => "session_id is wrong."));
+    exit();
+}
+$session_id = $_POST['session_id'];
+session_id($session_id);
 session_start();
+
 if( !isset( $_SESSION['username'] ) ){
     echo json_encode(array("success" => "0","error" => "5","message" => "cannot found SESSION[username]."));
     exit();
